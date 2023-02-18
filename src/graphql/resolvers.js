@@ -1,7 +1,7 @@
 const { User, Employee } = require("../models.js");
-const jwt = require('jsonwebtoken');
-const bcrypt = require('bcryptjs');
-const { jwtSecret } = require('../config.js');
+const jwt = require("jsonwebtoken");
+const bcrypt = require("bcryptjs");
+const { jwtSecret } = require("../config.js");
 
 const resolvers = {
   Query: {
@@ -17,7 +17,7 @@ const resolvers = {
     searchEmployeeById: async (_, { _id }) => {
       try {
         const employee = await Employee.findById(_id);
-        if(!employee) throw new Error("Employee not found");
+        if (!employee) throw new Error("Employee not found");
         return employee;
       } catch (error) {
         console.log(error);
@@ -30,14 +30,17 @@ const resolvers = {
         const hashedPassword = await bcrypt.hash(password, 10);
         const user = new User({ username, email, password: hashedPassword });
         await user.save();
-        const token = jwt.sign({ userId: user._id },jwtSecret);
+        const token = jwt.sign({ userId: user._id }, jwtSecret);
         return { user, token };
       } catch (error) {
         console.log(error);
         throw new Error(error);
       }
     },
-    addNewEmployee: async (_, { first_name, last_name, email, gender, salary }) => {
+    addNewEmployee: async (
+      _,
+      { first_name, last_name, email, gender, salary }
+    ) => {
       try {
         const employee = new Employee({
           first_name,
@@ -52,8 +55,34 @@ const resolvers = {
         throw new Error(err);
       }
     },
-    updateEmployeeById: (_, { id, name, email, department, salary }) => {
-      // TODO: update the employee with matching id with the provided name, email, department, and salary in the database, and return the updated employee object
+    updateEmployeeById: async (
+      _,
+      { _id, first_name, last_name, email, gender, salary }
+    ) => {
+      const employee = await Employee.findById(_id);
+      if (!employee) {
+        throw new Error("Employee not found.");
+      }
+
+      if (first_name) {
+        employee.first_name = first_name;
+      }
+      if (last_name) {
+        employee.last_name = last_name;
+      }
+      if (email) {
+        employee.email = email;
+      }
+      if (gender) {
+        employee.gender = gender;
+      }
+      if (salary) {
+        employee.salary = salary;
+      }
+
+      await employee.save();
+
+      return employee;
     },
     deleteEmployeeById: (_, { id }) => {
       // TODO: delete the employee with matching id from the database, and return a success message
