@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const express = require("express");
 const { ApolloServer, gql } = require("apollo-server-express");
-const { User, Employee } = require("./src/models");
+
 const typeDefs = require("./src/graphql/typeDefs");
 const resolvers = require("./src/graphql/resolvers");
 

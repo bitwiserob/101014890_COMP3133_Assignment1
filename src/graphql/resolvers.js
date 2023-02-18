@@ -1,7 +1,14 @@
+const { User, Employee } = require("../models.js");
 const resolvers = {
   Query: {
-    getAllEmployees: () => {
-      // TODO: retrieve all employees from database or other data source
+    getAllEmployees: async () => {
+      try {
+        const allEmployees = await Employee.find({});
+        return allEmployees;
+      } catch (err) {
+        console.log(err);
+        throw new Error("Error retrieving all employees");
+      }
     },
     searchEmployeeById: (_, { eid }) => {
       // TODO: retrieve employee with matching eid from database or other data source
