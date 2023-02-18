@@ -1,5 +1,4 @@
-
-const { ApolloServer, gql } = require('apollo-server-express');
+const { ApolloServer, gql } = require("apollo-server-express");
 
 const typeDefs = gql`
   type User {
@@ -25,8 +24,21 @@ const typeDefs = gql`
   type Mutation {
     signup(username: String!, email: String!, password: String!): User
     login(usernameOrEmail: String!, password: String!): String
-    addNewEmployee(first_name: String!, last_name: String!, email: String!, gender: String, salary: Float!): Employee
-    updateEmployeeById(eid: String!, first_name: String, last_name: String, email: String, gender: String, salary: Float): Employee
+    addNewEmployee(
+      first_name: String!
+      last_name: String!
+      email: String!
+      gender: String
+      salary: Float!
+    ): Employee
+    updateEmployeeById(
+      eid: String!
+      first_name: String
+      last_name: String
+      email: String
+      gender: String
+      salary: Float
+    ): Employee
     deleteEmployeeById(eid: String!): Boolean
   }
 `;
