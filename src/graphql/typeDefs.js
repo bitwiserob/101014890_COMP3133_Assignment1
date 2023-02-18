@@ -33,7 +33,7 @@ const typeDefs = gql`
       first_name: String!
       last_name: String!
       email: String!
-      gender: String
+      gender: String!
       salary: Float!
     ): Employee
     updateEmployeeById(

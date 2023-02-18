@@ -37,8 +37,20 @@ const resolvers = {
         throw new Error(error);
       }
     },
-    addNewEmployee: (_, { name, email, department, salary }) => {
-      // TODO: create a new employee with the provided name, email, department, and salary in the database, and return the new employee object
+    addNewEmployee: async (_, { first_name, last_name, email, gender, salary }) => {
+      try {
+        const employee = new Employee({
+          first_name,
+          last_name,
+          email,
+          gender,
+          salary,
+        });
+        await employee.save();
+        return employee;
+      } catch (err) {
+        throw new Error(err);
+      }
     },
     updateEmployeeById: (_, { id, name, email, department, salary }) => {
       // TODO: update the employee with matching id with the provided name, email, department, and salary in the database, and return the updated employee object
