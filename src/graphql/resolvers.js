@@ -10,8 +10,14 @@ const resolvers = {
         throw new Error("Error retrieving all employees");
       }
     },
-    searchEmployeeById: (_, { eid }) => {
-      // TODO: retrieve employee with matching eid from database or other data source
+    searchEmployeeById: async (_, { _id }) => {
+      try {
+        const employee = await Employee.findById(_id);
+        if(!employee) throw new Error("Employee not found");
+        return employee;
+      } catch (error) {
+        console.log(error);
+      }
     },
   },
   Mutation: {
@@ -21,11 +27,11 @@ const resolvers = {
     addNewEmployee: (_, { name, email, department, salary }) => {
       // TODO: create a new employee with the provided name, email, department, and salary in the database, and return the new employee object
     },
-    updateEmployeeById: (_, { eid, name, email, department, salary }) => {
-      // TODO: update the employee with matching eid with the provided name, email, department, and salary in the database, and return the updated employee object
+    updateEmployeeById: (_, { id, name, email, department, salary }) => {
+      // TODO: update the employee with matching id with the provided name, email, department, and salary in the database, and return the updated employee object
     },
-    deleteEmployeeById: (_, { eid }) => {
-      // TODO: delete the employee with matching eid from the database, and return a success message
+    deleteEmployeeById: (_, { id }) => {
+      // TODO: delete the employee with matching id from the database, and return a success message
     },
     login: (_, { email, password }) => {
       // TODO: check if email and password match a user in the database, and return a token or session ID if successful

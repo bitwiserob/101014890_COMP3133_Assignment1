@@ -8,6 +8,7 @@ const typeDefs = gql`
   }
 
   type Employee {
+    _id: ID!
     first_name: String!
     last_name: String!
     email: String!
@@ -17,7 +18,7 @@ const typeDefs = gql`
 
   type Query {
     getAllEmployees: [Employee!]!
-    searchEmployeeById(eid: String!): Employee
+    searchEmployeeById(_id: String!): Employee
     login(username: String!, password: String!): User
   }
 
@@ -32,14 +33,14 @@ const typeDefs = gql`
       salary: Float!
     ): Employee
     updateEmployeeById(
-      eid: String!
+      _id: String!
       first_name: String
       last_name: String
       email: String
       gender: String
       salary: Float
     ): Employee
-    deleteEmployeeById(eid: String!): Boolean
+    deleteEmployeeById(id: String!): Boolean
   }
 `;
 
