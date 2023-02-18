@@ -1,4 +1,8 @@
 const { User, Employee } = require("../models.js");
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcryptjs');
+const { jwtSecret } = require('../config.js');
+
 const resolvers = {
   Query: {
     getAllEmployees: async () => {
@@ -21,8 +25,17 @@ const resolvers = {
     },
   },
   Mutation: {
-    signup: (_, { name, email, password }) => {
-      // TODO: create a new user with the provided name, email, and password in the database, and return a token or session ID
+    signup: async (_, { username, email, password }) => {
+      try {
+        const hashedPassword = await bcrypt.hash(password, 10);
+        const user = new User({ username, email, password: hashedPassword });
+        await user.save();
+        const token = jwt.sign({ userId: user._id },jwtSecret);
+        return { user, token };
+      } catch (error) {
+        console.log(error);
+        throw new Error(error);
+      }
     },
     addNewEmployee: (_, { name, email, department, salary }) => {
       // TODO: create a new employee with the provided name, email, department, and salary in the database, and return the new employee object
