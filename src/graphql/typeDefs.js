@@ -18,6 +18,12 @@ const typeDefs = gql`
         errors: [String]
     }
 
+    type EmployeeResponse {
+      success: Boolean!
+      message: String!
+      employee: Employee
+    }
+
   type Employee {
     _id: ID!
     first_name: String!
@@ -41,7 +47,7 @@ const typeDefs = gql`
       email: String!
       gender: String!
       salary: Float!
-    ): Employee
+    ): EmployeeResponse!
     updateEmployeeById(
       _id: ID!
       first_name: String
@@ -50,7 +56,7 @@ const typeDefs = gql`
       gender: String
       salary: Float
     ): Employee
-    deleteEmployeeById(_id: String!): Employee
+    deleteEmployeeById(_id: String!): EmployeeResponse!
   }
 `;
 
