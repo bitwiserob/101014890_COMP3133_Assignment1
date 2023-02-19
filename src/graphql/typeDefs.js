@@ -11,6 +11,13 @@ const typeDefs = gql`
     token: String!
   }
 
+    type Response{
+        success:Boolean!
+        message: String!
+        status: Int!
+        errors: [String]
+    }
+
   type Employee {
     _id: ID!
     first_name: String!
