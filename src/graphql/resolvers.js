@@ -7,7 +7,7 @@ const resolvers = {
   Query: {
     getAllEmployees: async () => {
       try {
-        const allEmployees = await Employee.find({});
+        const allEmployees = await Employee.find({}, { _id: 1, first_name: 1, last_name: 1, email: 1, department: 1, salary: 1, gender: 1});
         return allEmployees;
       } catch (err) {
         console.log(err);
@@ -84,11 +84,25 @@ const resolvers = {
 
       return employee;
     },
-    deleteEmployeeById: (_, { id }) => {
-      // TODO: delete the employee with matching id from the database, and return a success message
+    deleteEmployeeById: async (_, { _id }) => {
+      const deletedEmployee = await Employee.findByIdAndDelete(_id);
+      return deletedEmployee;
     },
-    login: (_, { email, password }) => {
-      // TODO: check if email and password match a user in the database, and return a token or session ID if successful
+    login: async (_, { email, password }, { res }) => {
+      const user = await User.findOne({ email });
+      if (!user) {
+        throw new Error('Invalid login credentials');
+      }
+    
+      const validPassword = await bcrypt.compare(password, user.password);
+      if (!validPassword) {
+        throw new Error('Invalid login credentials');
+      }
+    
+      const token = jwt.sign({ userId: user._id },jwtSecret);
+    
+    
+      return { user, token };
     },
   },
 };

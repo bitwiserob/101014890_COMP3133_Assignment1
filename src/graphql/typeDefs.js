@@ -23,12 +23,11 @@ const typeDefs = gql`
   type Query {
     getAllEmployees: [Employee!]!
     searchEmployeeById(_id: String!): Employee
-    login(username: String!, password: String!): User
   }
 
   type Mutation {
     signup(username: String!, email: String!, password: String!): AuthPayload!
-    login(usernameOrEmail: String!, password: String!): String
+    login(email: String!, password: String!): AuthPayload!
     addNewEmployee(
       first_name: String!
       last_name: String!
@@ -44,7 +43,7 @@ const typeDefs = gql`
       gender: String
       salary: Float
     ): Employee
-    deleteEmployeeById(id: String!): Boolean
+    deleteEmployeeById(_id: String!): Employee
   }
 `;
 
